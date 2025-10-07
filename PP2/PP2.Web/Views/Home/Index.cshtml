@@ -1,0 +1,188 @@
+﻿@model PP2.Web.Models.OperacionBinaria
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora Binaria</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .validation-summary {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora Binaria</h1>
+        
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="validation-summary">
+                <strong>Por favor corrija los siguientes errores:</strong>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form method="post">
+            <div class="form-group">
+                <label for="a">a</label>
+                <input type="text" id="a" name="a" value="@Model.a" />
+                <span asp-validation-for="a" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="b">b</label>
+                <input type="text" id="b" name="b" value="@Model.b" />
+                <span asp-validation-for="b" class="error"></span>
+            </div>
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.aBinary) && ViewData.ModelState.IsValid)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ítem</th>
+                        <th>Binario</th>
+                        <th>Octal</th>
+                        <th>Decimal</th>
+                        <th>Hexadecimal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>a</strong></td>
+                        <td>@Model.aBinary</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.aBinary, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.aBinary, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.aBinary, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>b</strong></td>
+                        <td>@Model.bBinary</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.bBinary, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.bBinary, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.bBinary, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a AND b</strong></td>
+                        <td>@Model.andResult</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.andResult, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.andResult, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.andResult, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a OR b</strong></td>
+                        <td>@Model.orResult</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.orResult, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.orResult, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.orResult, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a XOR b</strong></td>
+                        <td>@Model.xorResult</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.xorResult, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.xorResult, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.xorResult, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a + b</strong></td>
+                        <td>@Model.sumResult</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.sumResult, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.sumResult, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.sumResult, 2), 16).ToUpper()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>a • b</strong></td>
+                        <td>@Model.multiplyResult</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.multiplyResult, 2), 8)</td>
+                        <td>@Convert.ToInt32(Model.multiplyResult, 2)</td>
+                        <td>@Convert.ToString(Convert.ToInt32(Model.multiplyResult, 2), 16).ToUpper()</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </div>
+</body>
+</html>
