@@ -1,7 +1,12 @@
 using System.Text;
 using System.Xml.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var aplicacion = builder.Build();
 
 aplicacion.UseSwagger();
 aplicacion.UseSwaggerUI();
